@@ -1,6 +1,7 @@
 package net.kaden.demiplane;
 
 import com.mojang.logging.LogUtils;
+import net.kaden.demiplane.item.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,6 +30,9 @@ public class Demiplane
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        //calls the mod items and ensures they are registered
+        ModItems.register(modEventBus);
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -51,7 +55,11 @@ public class Demiplane
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event)
     {
-
+        //adds item to creative tab
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.FABRICOFREALITY);
+            event.accept(ModItems.DEMIPLANESCROLL);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
